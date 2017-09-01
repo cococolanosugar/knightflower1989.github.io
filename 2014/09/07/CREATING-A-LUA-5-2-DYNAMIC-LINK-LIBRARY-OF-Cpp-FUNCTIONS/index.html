@@ -101,16 +101,17 @@
 
 
 
-<meta name="description" content="一个程序员的漫步人生...">
-<meta property="og:type" content="website">
-<meta property="og:title" content="骑士之花">
-<meta property="og:url" content="www.qqshark.com/index.html">
+<meta name="description" content="原文链接：http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/ 我的译文如下： 欢迎惠阅我的第四篇c++和Lua5.2混编的学习笔记。如果你还没读过我的前三篇文章，敬请移步如何在c++程序中运行lua脚本，  从lua脚本中向c++传递变量， 在lua中调用c++函数">
+<meta property="og:type" content="article">
+<meta property="og:title" content="用lua 5.2为c++动态链接库">
+<meta property="og:url" content="www.qqshark.com/2014/09/07/CREATING-A-LUA-5-2-DYNAMIC-LINK-LIBRARY-OF-Cpp-FUNCTIONS/index.html">
 <meta property="og:site_name" content="骑士之花">
-<meta property="og:description" content="一个程序员的漫步人生...">
+<meta property="og:description" content="原文链接：http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/ 我的译文如下： 欢迎惠阅我的第四篇c++和Lua5.2混编的学习笔记。如果你还没读过我的前三篇文章，敬请移步如何在c++程序中运行lua脚本，  从lua脚本中向c++传递变量， 在lua中调用c++函数">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T14:24:14.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="骑士之花">
-<meta name="twitter:description" content="一个程序员的漫步人生...">
+<meta name="twitter:title" content="用lua 5.2为c++动态链接库">
+<meta name="twitter:description" content="原文链接：http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/ 我的译文如下： 欢迎惠阅我的第四篇c++和Lua5.2混编的学习笔记。如果你还没读过我的前三篇文章，敬请移步如何在c++程序中运行lua脚本，  从lua脚本中向c++传递变量， 在lua中调用c++函数">
 
 
 
@@ -138,13 +139,13 @@
 
 
 
-  <link rel="canonical" href="www.qqshark.com/"/>
+  <link rel="canonical" href="www.qqshark.com/2014/09/07/CREATING-A-LUA-5-2-DYNAMIC-LINK-LIBRARY-OF-Cpp-FUNCTIONS/"/>
 
 
 
 
 
-  <title> 骑士之花 </title>
+  <title> 用lua 5.2为c++动态链接库 | 骑士之花 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -169,9 +170,7 @@
     
   
 
-  <div class="container sidebar-position-right 
-   page-home 
- ">
+  <div class="container sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -314,9 +313,9 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
-  <section id="posts" class="posts-expand">
+
+  <div id="posts" class="posts-expand">
     
-      
 
   
 
@@ -346,10 +345,7 @@
             
             
               
-                
-                <a class="post-title-link" href="/2014/09/07/CREATING-A-LUA-5-2-DYNAMIC-LINK-LIBRARY-OF-Cpp-FUNCTIONS/" itemprop="url">
-                  用lua 5.2为c++动态链接库
-                </a>
+                用lua 5.2为c++动态链接库
               
             
           </h2>
@@ -441,31 +437,52 @@
       
 
       
-        
-          <p>原文链接：<a href="http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/" target="_blank" rel="external">http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/</a></p>
+        <p>原文链接：<a href="http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/" target="_blank" rel="external">http://www.acamara.es/blog/2012/08/creating-a-lua-5-2-dynamic-link-library-of-c-functions/</a></p>
 <p>我的译文如下：</p>
 <p>欢迎惠阅我的第四篇c++和Lua5.2混编的学习笔记。如果你还没读过我的前三篇文章，敬请移步<a href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/">如何在c++程序中运行lua脚本</a>，  <a href="/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/">从lua脚本中向c++传递变量</a>， <a href="/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/">在lua中调用c++函数</a>。</p>
 <p>本篇新教程将讲述如何创建c动态链接库，以及如何在Lua5.2中使用它们。<br>我将假设你已经懂得怎么创建动态链接库。本文代码将在通过Mac osx10.8.4, gcc4.8进行编译。你可以略做修改转换编译器，然后运行到其他系统。<br>文中大多引述均来自lua用户WIKI和lua5.2的用户手册。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/09/07/CREATING-A-LUA-5-2-DYNAMIC-LINK-LIBRARY-OF-Cpp-FUNCTIONS/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<a id="more"></a>
+<h4 id="本文目的"><a href="#本文目的" class="headerlink" title="本文目的"></a>本文目的</h4><p>假设你已经有一些有用的并且能和Lua5.2适配的c或者c++函数（记住必须是lua_CFunction类型的函数哦）。为了重用代码，你希望将它们打包成库，然后再需要的时候动态链接。就如同你使用Lua标准库一样。<br>Lua标准库中有io, string, table等等，在需要的时候可以加载它们。</p>
+<p>本文，我们将学习怎样创建C语言动态链接库，并在Lua中调用它们。</p>
+<p>由于本文使用的c++代码基本与前文一致，所以就省略不写了。但是会展示简短的Lua代码以便更好的理解程序的输出结果，以及将要创建C语言动态链接库的c++代码。<br>你可以从个链接下载这三部分代码。</p>
+<h4 id="Lua脚本部分"><a href="#Lua脚本部分" class="headerlink" title="Lua脚本部分"></a>Lua脚本部分</h4><p>Lua脚本将动态的链接我们的新的库，其名字为cfunctions。<br><figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- load the c-function library</span></div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] Loading the C-function libraryn"</span>)</div><div class="line">cfunctions = <span class="built_in">require</span>(<span class="string">"cfunctions"</span>)</div><div class="line"></div><div class="line"><span class="comment">-- use some of the functions defined in the library</span></div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] Executing the C-library functionsn"</span>);</div><div class="line"><span class="keyword">local</span> f = cfunctions.fun1()</div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] Function 1 says it's "</span>, f, <span class="string">" times funnyn"</span>); </div><div class="line">f = cfunctions.fun2()</div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] Function 2 says it's "</span>, f, <span class="string">" times funnyn"</span>); </div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] Exiting Lua scriptn"</span>)</div></pre></td></tr></table></figure></p>
+<p>库文件代码如下：<br><figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt; </span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua.hpp&gt;</span></span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * Library functions</span></div><div class="line"><span class="comment"> */</span></div><div class="line"></div><div class="line"><span class="keyword">extern</span> <span class="string">"C"</span></div><div class="line">&#123;</div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="keyword">int</span> funval = <span class="number">10</span>;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">function_1</span><span class="params">(lua_State* l)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[DLL] Function 1 is very funny."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[DLL] It's fun value is: "</span> &lt;&lt; funval &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    lua_pushnumber(l, funval);</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">static</span> <span class="keyword">int</span> <span class="title">function_2</span><span class="params">(lua_State* l)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[DLL] Function 2 is twice as funny!"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[DLL] It's fun value is: "</span> &lt;&lt; <span class="number">2</span>*funval &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    lua_pushnumber(l, <span class="number">2</span>*funval);</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment"> * Registering functions</span></div><div class="line"><span class="comment"> */</span></div><div class="line"></div><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">luaL_Reg</span> <span class="title">cfunctions</span>[] = &#123;</span></div><div class="line">    &#123;<span class="string">"fun1"</span>, function_1&#125;,</div><div class="line">    &#123;<span class="string">"fun2"</span>, function_2&#125;,</div><div class="line">    &#123;<span class="literal">NULL</span>, <span class="literal">NULL</span>&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"><span class="keyword">int</span> __declspec(dllexport) luaopen_cfunctions(lua_State* l)</div><div class="line">&#123;</div><div class="line">    luaL_newlibtable(l, cfunctions);</div><div class="line">    luaL_setfuncs(l, cfunctions, <span class="number">0</span>);</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span>;</div><div class="line">&#125;</div><div class="line">&#125; <span class="comment">// end extern "C"</span></div></pre></td></tr></table></figure></p>
+<h4 id="细节分析"><a href="#细节分析" class="headerlink" title="细节分析"></a>细节分析</h4><p>用于产生动态链接库的代码包含一个导出函数luaopen_cfunctions()和两个隐藏的函数function_1()，function_2()。导出函数会将两个隐藏函数注册到Lua。这样，就不能从外部直接调用它们了。</p>
+<p>为了注册该库，我们首先创建一个带有需要注册函数的信息的结构体。在我们的例子中就是luaL_Reg结构体的数组cfunctions：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">static</span> <span class="keyword">const</span> <span class="class"><span class="keyword">struct</span> <span class="title">luaL_Reg</span> <span class="title">cfunctions</span>[] = &#123;</span></div><div class="line">    &#123;<span class="string">"fun1"</span>, function_1&#125;,</div><div class="line">    &#123;<span class="string">"fun2"</span>, function_2&#125;,</div><div class="line">    &#123;<span class="literal">NULL</span>, <span class="literal">NULL</span>&#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>需要说明的时，此例中在Lua将用fun1,fun2分别代替function_1，function_2。然后用luaL_newlibtable()在堆栈顶部创建library table，并用luaL_setfuncs()注册我们的函数。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">luaL_newlibtable(l, cfunctions);</div><div class="line">luaL_setfuncs(l, cfunctions, <span class="number">0</span>);</div></pre></td></tr></table></figure>
+<p>最后，返回加入堆栈的元素个数，只有一个，就是我们的library table。</p>
+<h4 id="咦，怎么报错了！！！"><a href="#咦，怎么报错了！！！" class="headerlink" title="咦，怎么报错了！！！"></a>咦，怎么报错了！！！</h4><p>可能有许多种原因，据我所知主要有以下两种：</p>
+<p>如果报错信息是“The specified procedure could not be found”（找不到指定的程序）就很容易解决。我认为弹出这个错误的原因主要有两个：</p>
+<h5 id="其一，你忘记了用extern-C-语句包含库文件代码。"><a href="#其一，你忘记了用extern-C-语句包含库文件代码。" class="headerlink" title="其一，你忘记了用extern C 语句包含库文件代码。"></a>其一，你忘记了用extern C 语句包含库文件代码。</h5><p>Lua底层用的是C语言，不能被c++链接。所以要告诉编译器用C语言的编译规则去编译库文件。解决方法就是用extern C包含你的库代码。</p>
+<h5 id="其二，你忘记了导出你的函数。"><a href="#其二，你忘记了导出你的函数。" class="headerlink" title="其二，你忘记了导出你的函数。"></a>其二，你忘记了导出你的函数。</h5><p>即调用luaopen_cfunctions()声明你要导出的函数。在微软的编译器上，你还必须早导出函数前面加上__declspecs(dllexport)宏，<br>在其他的编译器上，仅仅定义为extern函数就行了。否则，你就是把自己的函数隐藏了，当然，编译器不会给你好脸色的。</p>
+<p>如果报错信息是“Multiple Lua VMs detected”（检测到多个Lua虚拟机），说明你遇到了很隐蔽的错误。哥只有一个Lua状态机，所以第一次看到这个错误信息，哥被迷惑了。<br>你不能在Lua里面同时静态链接c++宿主程序和C库，你必须动态的往Lua库中链接它们。至少我这样解决了这个问题。</p>
+<p>以上。</p>
+<p>希望你已经学会怎么创建C函数库，并能通过require()函数动态的链接到Lua5.2。这与在c++中注册函数供Lua使用，并没有什么不同，但是却能大大提高代码的重用率。</p>
+<p>稍后将奉上在c++和Lua中互传对象的教程，也即是我们的最终教程。敬请期待。</p>
+
+      
+    </div>
+
+    <div>
+      
         
+
       
     </div>
 
     <div>
       
-    </div>
+        
 
-    <div>
       
     </div>
 
     <div>
+      
+        
+
       
     </div>
 
@@ -473,594 +490,38 @@
       
 
       
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="www.qqshark.com/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shicai Xu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="骑士之花">
-    </span>
-
-    
-      <header class="post-header">
-
         
-        
-          <h2 class="post-title" itemprop="name headline">
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
             
+              <a href="/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/" rel="next" title="在lua中调用c++函数">
+                <i class="fa fa-chevron-left"></i> 在lua中调用c++函数
+              </a>
             
-              
-                
-                <a class="post-title-link" href="/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/" itemprop="url">
-                  在lua中调用c++函数
-                </a>
-              
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
             
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-08-01T21:55:04+08:00">
-                2014-08-01
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/lua/" itemprop="url" rel="index">
-                    <span itemprop="name">lua</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/" class="leancloud_visitors" data-flag-title="在lua中调用c++函数">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,137
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  5
-                </span>
-              
-            </div>
-          
-
-          
-
+          </div>
         </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
       
 
       
-        
-          <p>原文出处:<a href="http://www.acamara.es/blog/2012/08/calling-c-functions-from-lua-5-2/" target="_blank" rel="external">http://www.acamara.es/blog/2012/08/calling-c-functions-from-lua-5-2/</a></p>
-<p>我的译文如下:</p>
-<p>欢迎惠阅我的第三篇Lua5.2的学习笔记。如果你还没读过我的前两篇文章，敬请移步<a href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/">如何在c++程序中运行lua脚本</a>，  <a href="/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/">从lua脚本中向c++传递变量</a>。</p>
-<p>本篇新教程讲讲述如何在Lua5.2中给c++函数传递参数，并接收返回值。<br>文中大多引述均来自lua用户WIKI和lua5.2的用户手册。</p>
-<p>嗯,我还是那个一如既往帅气阳光的基督小伙儿 Stigen Larsen。</p>
-<p>首先，我将展示Lua和c++代码，以及其运行的输出结果。然后逐步剖析其中难点。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
       
     </footer>
   </article>
 
 
-    
-      
 
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="www.qqshark.com/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shicai Xu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="骑士之花">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/" itemprop="url">
-                  从lua脚本中向c++传递变量
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-25T21:37:44+08:00">
-                2014-07-25
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/lua/" itemprop="url" rel="index">
-                    <span itemprop="name">lua</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/" class="leancloud_visitors" data-flag-title="从lua脚本中向c++传递变量">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  1,595
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  7
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>原文出处：<a href="http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/" target="_blank" rel="external">http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/</a></p>
-<p>我的译文如下</p>
-<p>这是第二篇关于我和c++lua混编肉搏的笔记。如果你还没读过我的第一篇文章，敬请移步<a href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/">如何在c++程序中运行lua脚本</a>。<br>文中大多引述均来自lua用户WIKI和lua5.2的用户手册。<br>上篇文章仅仅只是抛砖引玉，c++和lua混编的强悍之处我们并未深入介绍。我希望通过以下示例让你能更进一步了解和使用lua.<br>我们的目标有两个：第一，从宿主语言c++往Lua脚本中传递参数。第二，从Lua脚本中接收返回数据。注意，Lua脚本可以返回不止一个数据哦！</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
+    <div class="post-spread">
       
     </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="www.qqshark.com/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Shicai Xu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/uploads/avatar.jpg">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="骑士之花">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/" itemprop="url">
-                  如何在c++程序中运行lua脚本
-                </a>
-              
-            
-          </h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-16T20:23:09+08:00">
-                2014-07-16
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/lua/" itemprop="url" rel="index">
-                    <span itemprop="name">lua</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/" class="leancloud_visitors" data-flag-title="如何在c++程序中运行lua脚本">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-            <div class="post-wordcount">
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-file-word-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">字数统计</span>
-                
-                <span title="字数统计">
-                  952
-                </span>
-              
-
-              
-                <span class="post-meta-divider">|</span>
-              
-
-              
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-clock-o"></i>
-                </span>
-                
-                  <span class="post-meta-item-text">阅读时长</span>
-                
-                <span title="阅读时长">
-                  4
-                </span>
-              
-            </div>
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>原文出处：<br><a href="http://www.acamara.es/blog/2012/08/running-a-lua-5-2-script-from-c/" target="_blank" rel="external">http://www.acamara.es/blog/2012/08/running-a-lua-5-2-script-from-c/</a></p>
-<p>译文如下：</p>
-<p>Lua 是一个胶水语言，可以很方便的去扩展其它宿主语言。说她强大是有很多原因的，而我最喜爱的莫过于她允许无需重新编译即可改变一个程序的执行逻辑。<br>不幸的是，我发现网上很少有关于lua 5.2的混编教程，而lua 5.2与c++的混编与lua 5.1,lua 5.0,还有lua 4.x是有些差别的，其中包括如下主题：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-  </section>
-
-  
+  </div>
 
 
           </div>
@@ -1068,6 +529,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzk1NC80NTMx"></div>
+    
+  </div>
+
 
         </div>
         
@@ -1087,8 +554,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/uploads/avatar.jpg"
@@ -1188,6 +664,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#本文目的"><span class="nav-number">1.</span> <span class="nav-text">本文目的</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Lua脚本部分"><span class="nav-number">2.</span> <span class="nav-text">Lua脚本部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细节分析"><span class="nav-number">3.</span> <span class="nav-text">细节分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#咦，怎么报错了！！！"><span class="nav-number">4.</span> <span class="nav-text">咦，怎么报错了！！！</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#其一，你忘记了用extern-C-语句包含库文件代码。"><span class="nav-number">4.1.</span> <span class="nav-text">其一，你忘记了用extern C 语句包含库文件代码。</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#其二，你忘记了导出你的函数。"><span class="nav-number">4.2.</span> <span class="nav-text">其二，你忘记了导出你的函数。</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -1295,6 +787,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 

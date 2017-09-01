@@ -1,0 +1,1011 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.lug.ustc.edu.cn//css?family=Roboto Slab:300,300italic,400,400italic,700,700italic|Monda:300,300italic,400,400italic,700,700italic|Lobster Two:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="lua,c++," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="骑士之花" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="原文出处：http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/ 我的译文如下 这是第二篇关于我和c++lua混编肉搏的笔记。如果你还没读过我的第一篇文章，敬请移步如何在c++程序中运行lua脚本。文中大多引述均来自lua用户WIKI和lua5.2的用户手册。上篇文章仅仅只是抛砖引">
+<meta name="keywords" content="lua,c++">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从lua脚本中向c++传递变量">
+<meta property="og:url" content="www.qqshark.com/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/index.html">
+<meta property="og:site_name" content="骑士之花">
+<meta property="og:description" content="原文出处：http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/ 我的译文如下 这是第二篇关于我和c++lua混编肉搏的笔记。如果你还没读过我的第一篇文章，敬请移步如何在c++程序中运行lua脚本。文中大多引述均来自lua用户WIKI和lua5.2的用户手册。上篇文章仅仅只是抛砖引">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-09-01T14:29:26.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="从lua脚本中向c++传递变量">
+<meta name="twitter:description" content="原文出处：http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/ 我的译文如下 这是第二篇关于我和c++lua混编肉搏的笔记。如果你还没读过我的第一篇文章，敬请移步如何在c++程序中运行lua脚本。文中大多引述均来自lua用户WIKI和lua5.2的用户手册。上篇文章仅仅只是抛砖引">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"right","display":"hide","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: 'undefined',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="www.qqshark.com/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/"/>
+
+
+
+
+
+  <title> 从lua脚本中向c++传递变量 | 骑士之花 </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">骑士之花</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description">随想录</h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404.html" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="st-search-show-outputs">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <form class="site-search-form">
+  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
+</form>
+
+<script type="text/javascript">
+  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
+    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
+    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
+  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+
+  _st('install', 'aoQ6PufFyscKxkPmNGnx','2.0.0');
+</script>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="www.qqshark.com/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shicai Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="骑士之花">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                从lua脚本中向c++传递变量
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2014-07-25T21:37:44+08:00">
+                2014-07-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/lua/" itemprop="url" rel="index">
+                    <span itemprop="name">lua</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2014/07/25/PASSING-VARIABLES-FROM-LUA-5-2-TO-Cpp/" class="leancloud_visitors" data-flag-title="从lua脚本中向c++传递变量">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  1,595
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  7
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>原文出处：<a href="http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/" target="_blank" rel="external">http://www.acamara.es/blog/2012/08/passing-variables-from-lua-5-2-to-c-and-vice-versa/</a></p>
+<p>我的译文如下</p>
+<p>这是第二篇关于我和c++lua混编肉搏的笔记。如果你还没读过我的第一篇文章，敬请移步<a href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/">如何在c++程序中运行lua脚本</a>。<br>文中大多引述均来自lua用户WIKI和lua5.2的用户手册。<br>上篇文章仅仅只是抛砖引玉，c++和lua混编的强悍之处我们并未深入介绍。我希望通过以下示例让你能更进一步了解和使用lua.<br>我们的目标有两个：第一，从宿主语言c++往Lua脚本中传递参数。第二，从Lua脚本中接收返回数据。注意，Lua脚本可以返回不止一个数据哦！</p>
+<a id="more"></a>
+<h4 id="Lua脚本部分"><a href="#Lua脚本部分" class="headerlink" title="Lua脚本部分"></a>Lua脚本部分</h4><p>以下Lua脚本只是把我们存入全局的arg序列中的数据打印我们出来，然后返回不同类型Lua变量。<br>代码如下：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">-- print the arguments passed from C</span></div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] These args were passed into the script from Cn"</span>)</div><div class="line"><span class="keyword">for</span> i=<span class="number">1</span>,#<span class="built_in">arg</span> <span class="keyword">do</span></div><div class="line">    <span class="built_in">print</span>(<span class="string">"      "</span>, i, <span class="built_in">arg</span>[i])</div><div class="line"><span class="keyword">end</span> </div><div class="line"><span class="comment">-- return a value of different Lua types (boolean, table, numeric, string)</span></div><div class="line"><span class="built_in">io</span>.<span class="built_in">write</span>(<span class="string">"[Lua] Script returning data back to Cn"</span>)</div><div class="line"></div><div class="line"><span class="comment">-- create the table</span></div><div class="line"><span class="keyword">local</span> temp = &#123;&#125;</div><div class="line">temp[<span class="number">1</span>]=<span class="number">9</span></div><div class="line">temp[<span class="number">2</span>]=<span class="string">"See you space cowboy!"</span></div><div class="line"></div><div class="line"><span class="keyword">return</span> <span class="literal">true</span>,temp,<span class="number">21</span>,<span class="string">"I am a mushroom"</span></div></pre></td></tr></table></figure>
+<p>为了在c++和Lua之间互传信息，我们必须编译c++程序。</p>
+<h4 id="c-部分"><a href="#c-部分" class="headerlink" title="c++部分"></a>c++部分</h4><p>正如上篇教程，我会先奉上完整代码，然后逐步剖析。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;sstream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;lua.hpp&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">char</span>* argv[])</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="comment">// new Lua state</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Starting Lua state"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    lua_State *lua_state = luaL_newstate();</div><div class="line"></div><div class="line">    <span class="comment">// load Lua libraries</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Loading Lua libraries"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">static</span> <span class="keyword">const</span> luaL_Reg lualibs[] = </div><div class="line">    &#123;</div><div class="line">        &#123;<span class="string">"base"</span>, luaopen_base&#125;,</div><div class="line">        &#123;<span class="string">"io"</span>, luaopen_io&#125;,</div><div class="line">        &#123;<span class="literal">NULL</span>, <span class="literal">NULL</span>&#125;</div><div class="line">    &#125;;</div><div class="line">    <span class="keyword">const</span> luaL_Reg *lib = lualibs;</div><div class="line">    <span class="keyword">for</span>(; lib-&gt;func != <span class="literal">NULL</span>; lib++)</div><div class="line">    &#123;</div><div class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" loading '"</span> &lt;&lt; lib-&gt;name &lt;&lt; <span class="string">"'"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">        luaL_requiref(lua_state, lib-&gt;name, lib-&gt;func, <span class="number">1</span>);</div><div class="line">        lua_settop(lua_state, <span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// start the arg table in Lua</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Creating the arg table"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    lua_createtable(lua_state, <span class="number">2</span>, <span class="number">0</span>);</div><div class="line">    lua_pushnumber(lua_state, <span class="number">1</span>);</div><div class="line">    lua_pushnumber(lua_state, <span class="number">49</span>);</div><div class="line">    lua_settable(lua_state, <span class="number">-3</span>);</div><div class="line">    lua_pushnumber(lua_state, <span class="number">2</span>);</div><div class="line">    lua_pushstring(lua_state, <span class="string">"Life is a beach"</span>);</div><div class="line">    lua_settable(lua_state, <span class="number">-3</span>);</div><div class="line">    lua_setglobal(lua_state, <span class="string">"arg"</span>);</div><div class="line"></div><div class="line">    <span class="comment">// load the script</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Loading the Lua script"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">int</span> status = luaL_loadfile(lua_state, <span class="string">"parrotscript.lua"</span>);</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" return: "</span> &lt;&lt; status &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line"></div><div class="line">    <span class="comment">// run the script with the given arguments</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Running script"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">int</span> result = <span class="number">0</span>;</div><div class="line">    <span class="keyword">if</span>(status == LUA_OK)</div><div class="line">    &#123;</div><div class="line">        result = lua_pcall(lua_state, <span class="number">0</span>, LUA_MULTRET, <span class="number">0</span>);</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">else</span></div><div class="line">    &#123;</div><div class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">" Could not load the script."</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// print the values returned from the script</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Values returned from the script:"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="built_in">std</span>::<span class="built_in">stringstream</span> str_buf;</div><div class="line">    <span class="keyword">while</span>(lua_gettop(lua_state))</div><div class="line">    &#123;</div><div class="line">        str_buf.str(<span class="built_in">std</span>::<span class="built_in">string</span>());</div><div class="line">        str_buf &lt;&lt; <span class="string">" "</span>;</div><div class="line">        <span class="keyword">switch</span>(lua_type(lua_state, lua_gettop(lua_state)))</div><div class="line">        &#123;</div><div class="line">        <span class="keyword">case</span> LUA_TNUMBER:</div><div class="line">            str_buf &lt;&lt; <span class="string">"script returned the number: "</span></div><div class="line">                 &lt;&lt; lua_tonumber(lua_state, lua_gettop(lua_state));</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> LUA_TTABLE:</div><div class="line">            str_buf &lt;&lt; <span class="string">"script returned a table"</span>;</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> LUA_TSTRING:</div><div class="line">            str_buf &lt;&lt; <span class="string">"script returned the string: "</span></div><div class="line">                 &lt;&lt; lua_tostring(lua_state, lua_gettop(lua_state));</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">case</span> LUA_TBOOLEAN:</div><div class="line">            str_buf &lt;&lt; <span class="string">"script returned the boolean: "</span></div><div class="line">                 &lt;&lt; lua_toboolean(lua_state, lua_gettop(lua_state));</div><div class="line">            <span class="keyword">break</span>;</div><div class="line">        <span class="keyword">default</span>:</div><div class="line">            str_buf &lt;&lt; <span class="string">"script returned an unknown-type value"</span>;</div><div class="line">        &#125;</div><div class="line">        lua_pop(lua_state, <span class="number">1</span>);</div><div class="line">        <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; str_buf.str() &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="comment">// close the Lua state</span></div><div class="line">    <span class="built_in">std</span>::<span class="built_in">cout</span> &lt;&lt; <span class="string">"[C++] Closing the Lua state"</span> &lt;&lt; <span class="built_in">std</span>::<span class="built_in">endl</span>;</div><div class="line">    <span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正如亲眼所见，程序的基本结构一如从前。我们打开一个状态机，加载库文件，在状态机上运行脚本，最后关闭状态机。<br>程序输出如下：</p>
+<h4 id="细节剖析"><a href="#细节剖析" class="headerlink" title="细节剖析"></a>细节剖析</h4><p>细心如你者，一定发现了这次我们并未使用luaL_dofile()函数（事实上它是一个宏）来执行脚本。而是代之以luaL_loadfile()加载脚本，以lua_pcall()执行脚本。这是为了展示luaL_dofile宏的原理，实际上luaL_dofile是以上两个函数的合体，其宏定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">(luaL_loadfile(L, filename) || lua_pcall(L, <span class="number">0</span>, LUA_MULTRET, <span class="number">0</span>))</div></pre></td></tr></table></figure>
+<p>我认为是时候，介绍一下Lua堆栈了。Lua堆栈是连接宿主语言和Lua的桥梁。宿主语言可以在堆栈中放入Lua状态机可见的数据，而Lua状态机也可以在Lua堆栈中放入宿主语言可见的数据。虽然听起来很老土，但是很有效。<br>以下代码很直观的反应了这一点：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// start the arg table in Lua</span></div><div class="line">lua_createtable(lua_state, <span class="number">2</span>, <span class="number">0</span>);</div><div class="line">lua_pushnumber(lua_state, <span class="number">1</span>);</div><div class="line">lua_pushnumber(lua_state, <span class="number">49</span>);</div><div class="line">lua_settable(lua_state, <span class="number">-3</span>);</div><div class="line">lua_pushnumber(lua_state, <span class="number">2</span>);</div><div class="line">lua_pushstring(lua_state, <span class="string">"Life is a beach"</span>);</div><div class="line">lua_settable(lua_state, <span class="number">-3</span>);</div><div class="line">lua_setglobal(lua_state, <span class="string">"arg"</span>);</div></pre></td></tr></table></figure>
+<p>这段代码的作用是创建类型为table的全局变量arg作为Lua的输入参数。<br>此table使用连续存储，并含有连个元素：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">arg</span>[<span class="number">1</span>] = <span class="number">49</span></div><div class="line"><span class="built_in">arg</span>[<span class="number">2</span>] = <span class="string">"Life is a beach"</span></div></pre></td></tr></table></figure>
+<p>这段代码可以分为三部分：</p>
+<h5 id="创建table"><a href="#创建table" class="headerlink" title="创建table"></a>创建table</h5><p>第一部分通过lua_createtable()函数完成，此函数创建一个匿名table并把它存入堆栈的顶部，其定义如下：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">lua_createtable</span><span class="params">(lua_State *L, <span class="keyword">int</span> narr, <span class="keyword">int</span> nrec)</span></span>;</div></pre></td></tr></table></figure>
+<p>其中参数narr和nrec分别用于指明连续存储元素和非连续存储元素的的数量。因为我们的table只有两个连续存储的元素，所以我们传递的实参为2和0.</p>
+<h5 id="填充table"><a href="#填充table" class="headerlink" title="填充table"></a>填充table</h5><p>第二部分，用期望的值填充table。首先，用lua_push*()往Lua堆栈压入两个值，第一个是table的下标，第二个是下标对应得值。然后，通过lua_settable(lua_state, -3)将上述下标和对应的值存入table，-3代表从堆栈顶部往下数第三个数据，亦即是我们创建的匿名table。<br>以上操作相当于如下代码：</p>
+<figure class="highlight lua"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">t[k] = v</div></pre></td></tr></table></figure>
+<p>v,k分别是堆栈顶部第一和第二个元素。<br>因此，以下代码：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">lua_pushnumber(lua_state, <span class="number">1</span>);</div><div class="line">lua_pushnumber(lua_state, <span class="number">49</span>);</div><div class="line">lua_settable(lua_state, <span class="number">-3</span>);</div></pre></td></tr></table></figure>
+<p>就是设置我们的匿名table的下标1对应的值为49。需要注意的以上操作也将下标和对应的值弹出了堆栈，此时匿名table变成栈顶元素。</p>
+<h5 id="命名table"><a href="#命名table" class="headerlink" title="命名table"></a>命名table</h5><p>第三部分，为创建和填充的table起个名字。这一步可以用lua_setglobal()函数，将table命名为全局arg的同时也将其弹出堆栈。此后，Lua就可以在脚本中识别这个table。<br>一旦脚本运行，其返回值也可以通过Lua堆栈传递给c++。需要特别注意的是，Lua将返回值按return语句后的表达式，顺序入栈，逆序出栈。<br>因为附带着冗余的系统信息，这段操作返回的信息量很大。基本上分为四步：</p>
+<p>用lua_gettop()函数获取栈顶的具体位置<br>用lua_type()函数获取栈中具体位置的数据类型<br>用lua_to*()函数将堆栈中的数据转换为c++对应的类型<br>用lua_pop()函数弹出栈中的数据</p>
+<p>这些函数的名字很好的解释其作用。<br>就是这样，很简单！</p>
+<p>此文讨论了宿主语言和Lua共享数据的基本概念。你可以修改Lua脚本用以观察程序的输出变化。务必记住，你不需要重新编译就可以改变其执行逻辑。<br>下篇文章将讨论如何在Lua脚本中调用c++函数，敬请期待。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/lua/" rel="tag"># lua</a>
+          
+            <a href="/tags/c/" rel="tag"># c++</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2014/07/16/RUNNING-A-LUA-5-2-SCRIPT-FROM-Cpp/" rel="next" title="如何在c++程序中运行lua脚本">
+                <i class="fa fa-chevron-left"></i> 如何在c++程序中运行lua脚本
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2014/08/01/CALLING-Cpp-FUNCTIONS-FROM-LUA-5-2/" rel="prev" title="在lua中调用c++函数">
+                在lua中调用c++函数 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yNzk1NC80NTMx"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/uploads/avatar.jpg"
+               alt="Shicai Xu" />
+          <p class="site-author-name" itemprop="name">Shicai Xu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/GeorgeValentin" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+          <div class="cc-license motion-element" itemprop="license">
+            <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" target="_blank">
+              <img src="/images/cc-by-nc-sa.svg" alt="Creative Commons" />
+            </a>
+          </div>
+        
+
+        
+        
+          <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+            <div class="links-of-blogroll-title">
+              <i class="fa  fa-fw fa-globe"></i>
+              Links
+            </div>
+            <ul class="links-of-blogroll-list">
+              
+                <li class="links-of-blogroll-item">
+                  <a href="http://notes.iissnan.com" title="IIssNan" target="_blank">IIssNan</a>
+                </li>
+              
+            </ul>
+          </div>
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Lua脚本部分"><span class="nav-number">1.</span> <span class="nav-text">Lua脚本部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#c-部分"><span class="nav-number">2.</span> <span class="nav-text">c++部分</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#细节剖析"><span class="nav-number">3.</span> <span class="nav-text">细节剖析</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#创建table"><span class="nav-number">3.1.</span> <span class="nav-text">创建table</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#填充table"><span class="nav-number">3.2.</span> <span class="nav-text">填充table</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#命名table"><span class="nav-number">3.3.</span> <span class="nav-text">命名table</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Shicai Xu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
+  <script>AV.initialize("jNtrKbh7n1iCujKSNNQ2AlH3", "l5SnKfDysKAOoMwfpVAFUDTR");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+
+</body>
+</html>
+<script type="text/javascript" src="/js/src/particle.js" count="66" zindex="-2" opacity="0.5" color="0,0,0"></script>
