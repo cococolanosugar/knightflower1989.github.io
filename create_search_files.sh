@@ -1,0 +1,2 @@
+export HEXO_ALGOLIA_INDEXING_KEY="30152b53c95a4d1097e0e09475a3d5af"
+hexo algolia

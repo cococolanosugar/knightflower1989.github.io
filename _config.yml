@@ -84,3 +84,11 @@ deploy:
 # Extensions
 ## Plugins: http://hexo.io/plugins/
 plugins: hexo-generate-feed
+
+
+algolia:
+  applicationID: 'X65ROJ637R'
+  apiKey: '30152b53c95a4d1097e0e09475a3d5af'
+  adminApiKey: '388674311c6a579de1770856b353dcfe'
+  indexName: 'Github Pages'
+  chunkSize: 5000

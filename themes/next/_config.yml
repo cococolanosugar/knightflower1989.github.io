@@ -284,10 +284,10 @@ mathjax:
 
 
 # Swiftype Search API Key
-swiftype_key: aoQ6PufFyscKxkPmNGnx
+swiftype_key:
 
 # Baidu Analytics ID
-#baidu_analytics:
+baidu_analytics: 3874ccd45e3023311f753fc11271ad12
 
 # Duoshuo ShortName
 #duoshuo_shortname:
@@ -316,7 +316,7 @@ changyan:
 
 # Support for LiveRe comments system.
 # You can get your uid from https://livere.com/insight/myCode (General web site)
-livere_uid: MTAyMC8yNzk1NC80NTMx
+livere_uid: MTAyMC8zMDYxMy83MTY4
 
 # Baidu Share
 # Available value:
@@ -393,8 +393,8 @@ vkontakte_api:
 # You can visit https://leancloud.cn get AppID and AppKey.
 leancloud_visitors:
   enable: true
-  app_id: jNtrKbh7n1iCujKSNNQ2AlH3
-  app_key: l5SnKfDysKAOoMwfpVAFUDTR
+  app_id: NQ8tweBAJWJI4yil33T7zSGp-gzGzoHsz
+  app_key: xx92YTy8gk5ylTSsh0uxHnQV
 
 # Show PV/UV of the website/page with busuanzi.
 # Get more information on http://ibruce.info/2015/04/04/busuanzi/
@@ -444,7 +444,7 @@ calendar:
 
 # Algolia Search
 algolia_search:
-  enable: false
+  enable: true
   hits:
     per_page: 10
   labels:
