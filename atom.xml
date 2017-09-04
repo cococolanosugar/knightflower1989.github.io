@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="www.qqshark.com/"/>
-  <updated>2017-09-01T14:31:53.000Z</updated>
+  <updated>2017-09-04T02:37:59.000Z</updated>
   <id>www.qqshark.com/</id>
   
   <author>
@@ -14,6 +14,38 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>微信小程序开发环境配置笔记</title>
+    <link href="www.qqshark.com/2017/01/17/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/"/>
+    <id>www.qqshark.com/2017/01/17/微信小程序开发环境配置笔记/</id>
+    <published>2017-01-17T02:22:24.000Z</published>
+    <updated>2017-09-04T02:37:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<p><center>微信小程序开发环境配置, Nginx需要开启https, 申请ssl证书</center><br><a id="more"></a></p>
+<h4 id="1-调试时可以直接用内网"><a href="#1-调试时可以直接用内网" class="headerlink" title="1.调试时可以直接用内网"></a>1.调试时可以直接用内网</h4><p><a href="http://ip:port/api/a/b?args={}&amp;sig=xxxx" target="_blank" rel="external">http://ip:port/api/a/b?args={}&amp;sig=xxxx</a><br>进行联网</p>
+<h4 id="2-开发时小程序后台配置"><a href="#2-开发时小程序后台配置" class="headerlink" title="2.开发时小程序后台配置"></a>2.开发时小程序后台配置</h4><p>项目-开发环境不校验请求域以及TLS版本 去掉勾选不验证域名</p>
+<h4 id="3-上传时，需要在微信小程序后台，设置，开发设置添加校验域名，"><a href="#3-上传时，需要在微信小程序后台，设置，开发设置添加校验域名，" class="headerlink" title="3.上传时，需要在微信小程序后台，设置，开发设置添加校验域名，"></a>3.上传时，需要在微信小程序后台，设置，开发设置添加校验域名，</h4><p>注意:不要带www，例如 <a href="https://wjdc.xxx.com" target="_blank" rel="external">https://wjdc.xxx.com</a></p>
+<h4 id="4-服务器需要搭建https环境"><a href="#4-服务器需要搭建https环境" class="headerlink" title="4.服务器需要搭建https环境"></a>4.服务器需要搭建https环境</h4><h5 id="a-nginx开启https"><a href="#a-nginx开启https" class="headerlink" title="a.nginx开启https"></a>a.nginx开启https</h5><p>命令行 nginx -V 查看nginx是否开启了–with-http_ssl_module选项，如果没有，需要重新编译带上此选项</p>
+<h5 id="b-申请ssl证书"><a href="#b-申请ssl证书" class="headerlink" title="b.申请ssl证书"></a>b.申请ssl证书</h5><p>去阿里云申请ssl证书，有免费试用一年的。<br>服务器是阿里云的，推荐DNS类证书，注意对应域名不要带www，例如wjdc.xxx.com，否则会提示服务器被冒充，勾选自动创建主机记录和记录值，审核完毕后下载证书，解压到nginx.conf同级的cert目录下<br>然后修改nginx.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443;</div><div class="line">    server_name wjdc.knightflower.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /data/wjdc/logs/https_access.log  main;</div><div class="line"></div><div class="line">    ssl on;</div><div class="line">    ssl_certificate   cert/xxx.pem;</div><div class="line">    ssl_certificate_key  cert/xxx.key;</div><div class="line">    ssl_session_timeout 5m;</div><div class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">    ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        try_files /_not_exists_ @backend;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location @backend &#123;</div><div class="line">        proxy_set_header X-Forwarded-For $remote_addr;</div><div class="line">        proxy_set_header Host            $http_host;</div><div class="line"></div><div class="line">        proxy_pass http://127.0.0.1:6066;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">nginx -t -c /etc/nginx/nginx.conf <span class="comment">#校验配置文件是否有错</span></div><div class="line">nginx -s reload <span class="comment">#重新加载配置文件</span></div></pre></td></tr></table></figure>
+<p>然后就可以在小程序里面用wx.request接口请求服务器，url:”<a href="https://wjdc.xxx.com/a/q/query" target="_blank" rel="external">https://wjdc.xxx.com/a/q/query</a>“</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;center&gt;微信小程序开发环境配置, Nginx需要开启https, 申请ssl证书&lt;/center&gt;&lt;br&gt;
+    
+    </summary>
+    
+      <category term="小程序" scheme="www.qqshark.com/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F/"/>
+    
+    
+      <category term="nginx" scheme="www.qqshark.com/tags/nginx/"/>
+    
+      <category term="https" scheme="www.qqshark.com/tags/https/"/>
+    
+  </entry>
   
   <entry>
     <title>用lua 5.2为c++动态链接库</title>

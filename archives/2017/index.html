@@ -127,9 +127,9 @@
       author: '博主'
     },
     algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
+      applicationID: 'X65ROJ637R',
+      apiKey: '30152b53c95a4d1097e0e09475a3d5af',
+      indexName: 'Github Pages',
       hits: {"per_page":10},
       labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
     }
@@ -154,6 +154,16 @@
 
 
 
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?3874ccd45e3023311f753fc11271ad12";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
 
 
 
@@ -268,7 +278,7 @@
       
         <li class="menu-item menu-item-search">
           
-            <a href="javascript:;" class="st-search-show-outputs">
+            <a href="javascript:;" class="popup-trigger">
           
             
               <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
@@ -283,18 +293,26 @@
   
     <div class="site-search">
       
-  <form class="site-search-form">
-  <input type="text" id="st-search-input" class="st-search-input st-default-search-input" />
-</form>
+  
+  <div class="algolia-popup popup search-popup">
+    <div class="algolia-search">
+      <div class="algolia-search-input-icon">
+        <i class="fa fa-search"></i>
+      </div>
+      <div class="algolia-search-input" id="algolia-search-input"></div>
+    </div>
 
-<script type="text/javascript">
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-    (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-    e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
+    <div class="algolia-results">
+      <div id="algolia-stats"></div>
+      <div id="algolia-hits"></div>
+      <div id="algolia-pagination" class="algolia-pagination"></div>
+    </div>
 
-  _st('install', 'aoQ6PufFyscKxkPmNGnx','2.0.0');
-</script>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+  </div>
+
 
 
 
@@ -322,7 +340,7 @@
       
         
       
-      嗯..! 目前共计 1 篇日志。 继续努力。
+      嗯..! 目前共计 5 篇日志。 继续努力。
     </span>
 
     
@@ -346,9 +364,9 @@
 
       <h2 class="post-title">
         
-            <a class="post-title-link" href="/2017/09/01/hello-world/" itemprop="url">
+            <a class="post-title-link" href="/2017/01/17/微信小程序开发环境配置笔记/" itemprop="url">
               
-                <span itemprop="name">Hello World</span>
+                <span itemprop="name">微信小程序开发环境配置笔记</span>
               
             </a>
         
@@ -356,9 +374,9 @@
 
       <div class="post-meta">
         <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-01T17:15:18+08:00"
-              content="2017-09-01" >
-          09-01
+              datetime="2017-01-17T10:22:24+08:00"
+              content="2017-01-17" >
+          01-17
         </time>
       </div>
 
@@ -415,7 +433,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -426,7 +444,7 @@
             
             <div class="site-state-item site-state-categories">
               <a href="/categories/index.html">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">3</span>
                 <span class="site-state-item-name">分类</span>
               </a>
             </div>
@@ -437,7 +455,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">2</span>
+                <span class="site-state-item-count">5</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
@@ -671,12 +689,25 @@
 
 
 
+  
+  
+  
+  <link rel="stylesheet" href="/lib/algolia-instant-search/instantsearch.min.css">
+
+  
+  
+  <script src="/lib/algolia-instant-search/instantsearch.min.js"></script>
+  
+
+  <script src="/js/src/algolia-search.js?v=5.1.0"></script>
+
+
 
   
 
   
   <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.1.js"></script>
-  <script>AV.initialize("jNtrKbh7n1iCujKSNNQ2AlH3", "l5SnKfDysKAOoMwfpVAFUDTR");</script>
+  <script>AV.initialize("NQ8tweBAJWJI4yil33T7zSGp-gzGzoHsz", "xx92YTy8gk5ylTSsh0uxHnQV");</script>
   <script>
     function showTime(Counter) {
       var query = new AV.Query(Counter);
