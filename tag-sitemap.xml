@@ -30,15 +30,22 @@
     </url>
 
     <url>
-        <loc>www.qqshark.com/tags/cocos2dx/</loc>
+        <loc>www.qqshark.com/tags/oc/</loc>
         <lastmod>2017-09-04T03:04:54.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
 
     <url>
-        <loc>www.qqshark.com/tags/oc/</loc>
-        <lastmod>2017-09-04T03:04:54.000Z</lastmod>
+        <loc>www.qqshark.com/tags/cocos2dx/</loc>
+        <lastmod>2017-09-04T03:16:14.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>www.qqshark.com/tags/jsb/</loc>
+        <lastmod>2017-09-04T03:16:14.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>

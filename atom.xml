@@ -58,6 +58,55 @@
   </entry>
   
   <entry>
+    <title>cocos2dx 3.13.1 jsbinding 测试记录</title>
+    <link href="www.qqshark.com/2016/11/16/cocos2dx-3-13-1-jsbinding-%E6%B5%8B%E8%AF%95%E8%AE%B0%E5%BD%95/"/>
+    <id>www.qqshark.com/2016/11/16/cocos2dx-3-13-1-jsbinding-测试记录/</id>
+    <published>2016-11-16T03:08:33.000Z</published>
+    <updated>2017-09-04T03:16:14.000Z</updated>
+    
+    <content type="html"><![CDATA[<center><br>cocos2dx 3.13.1 jsbinding 测试记录<br></center>
+
+<a id="more"></a>
+<ol>
+<li><p>cocos new -p com.mz.jsbtest -d ./ -l js  JSBTest</p>
+</li>
+<li><p>在cocos2dx/cocos目录新建目录my 增加类文件</p>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//CustomClass.hpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">ifndef</span> CustomClass_hpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">define</span> CustomClass_hpp</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;stdio.h&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"cocos2d.h"</span></span></div><div class="line">USING_NS_CC;</div><div class="line"><span class="keyword">namespace</span> cocos2d &#123;</div><div class="line">    <span class="class"><span class="keyword">class</span> <span class="title">CustomClass</span> :</span> <span class="keyword">public</span> cocos2d::Ref</div><div class="line">    &#123;</div><div class="line">    <span class="keyword">public</span>:</div><div class="line">        </div><div class="line">        CustomClass();</div><div class="line">        </div><div class="line">        ~CustomClass();</div><div class="line">        </div><div class="line">        <span class="function"><span class="keyword">bool</span> <span class="title">init</span><span class="params">()</span></span>;</div><div class="line">        </div><div class="line">        <span class="built_in">std</span>::<span class="function"><span class="built_in">string</span> <span class="title">helloMsg</span><span class="params">()</span></span>;</div><div class="line">        </div><div class="line">        CREATE_FUNC(CustomClass);</div><div class="line">    &#125;;</div><div class="line">&#125; <span class="comment">//namespace cocos2d</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">endif</span> <span class="comment">/* CustomClass_hpp */</span></span></div></pre></td></tr></table></figure>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//CustomClass.cpp</span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"CustomClass.hpp"</span></span></div><div class="line"></div><div class="line">USING_NS_CC;</div><div class="line"></div><div class="line">CustomClass::CustomClass()&#123;</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line">CustomClass::~CustomClass()&#123;</div><div class="line">    </div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">bool</span> CustomClass::init()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">true</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">std</span>::<span class="built_in">string</span> CustomClass::helloMsg() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">"Hello from CustomClass::sayHello"</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<ol>
+<li>在cocos2dx/tools/tojs 目录下新增cocos2dx_custom.ini配置文件用于描述绑定的名字空间，前缀等信息，如果提示错误尽量参考tojs目录下的其他ini文件的格式如cocos2dx_builder.ini，不同cocos2dx版本之间语法貌似有差异,注意这里我们新增的类继承了Ref类，所以base_classes_to_skip = Ref，否则会提示Ref x86_64未定义啥的，如果是纯是自己写的类就不用了</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">[cocos2dx_custom]</div><div class="line">name = cocos2dx_custom</div><div class="line">prefix = cocos2dx_custom</div><div class="line">target_namespace = cc</div><div class="line"></div><div class="line">headers = %(cocosdir)s/cocos/my/CustomClass.hpp</div><div class="line">classes = CustomClass</div><div class="line"></div><div class="line">android_headers = -I%(androidndkdir)s/platforms/android-14/arch-arm/usr/include -I%(androidndkdir)s/sources/cxx-stl/gnu-libstdc++/4.8/libs/armeabi-v7a/include -I%(androidndkdir)s/sources/cxx-stl/gnu-libstdc++/4.8/include -I%(androidndkdir)s/sources/cxx-stl/gnu-libstdc++/4.9/libs/armeabi-v7a/include -I%(androidndkdir)s/sources/cxx-stl/gnu-libstdc++/4.9/include</div><div class="line">android_flags = -D_SIZE_T_DEFINED_ </div><div class="line"></div><div class="line">clang_headers = -I%(clangllvmdir)s/%(clang_include)s </div><div class="line">clang_flags = -nostdinc -x c++ -std=c++11 -U __SSE__</div><div class="line"></div><div class="line">cocos_headers = -I%(cocosdir)s -I%(cocosdir)s/cocos -I%(cocosdir)s/cocos/editor-support -I%(cocosdir)s/cocos/platform/android -I%(cocosdir)s/external</div><div class="line"></div><div class="line">cocos_flags = -DANDROID</div><div class="line"></div><div class="line">extra_arguments = %(android_headers)s %(clang_headers)s %(cxxgenerator_headers)s %(cocos_headers)s %(android_flags)s %(clang_flags)s %(cocos_flags)s %(extra_flags)s </div><div class="line"></div><div class="line">classes_have_type_info = no</div><div class="line"></div><div class="line"># base classes which will be skipped when their sub-classes found them.</div><div class="line">base_classes_to_skip = Ref</div><div class="line"></div><div class="line"># Determining whether to use script object(js object) to control the lifecycle of native(cpp) object or the other way around. Supported values are &apos;yes&apos; or &apos;no&apos;.</div><div class="line">script_control_cpp = yes</div></pre></td></tr></table></figure>
+<ol>
+<li><p>在tojs目录下，修改执行genbindings.py文件尽量注释掉cmd_args中cocos2dx自带的那些绑定，再加入自己定制的绑定，否则容易出错，就呆重新建项目， 然后执行python genbindings.py<br>也可以加在custom_cmd_args里面会生成到cocos2dx/frameworks/custome/auto，不过目录处理起来比较麻烦</p>
+</li>
+<li><p>生成的代码在cocos2dx/cocos/scripting/js-bindings/auto下面，加入Xcode中的cocos2d_js_bindings.xcodeproj<br>my目录加到头文件搜索路径</p>
+</li>
+<li><p>在AppDelegate.cpp引入生成的头文件</p>
+</li>
+</ol>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"scripting/js-bindings/auto/jsb_cocos2dx_custom.hpp"</span></span></div></pre></td></tr></table></figure>
+<p>在applicationDidFinishLaunching函数加入<br>sc-&gt;addRegisterCallback(register_all_cocos2dx_custom);<br>然后就可以在app.js中调用我们绑定的代码了</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">var customClass = cc.CustomClass.create();</div><div class="line">var msg = customClass.helloMsg()</div><div class="line">cc.<span class="built_in">log</span>(<span class="string">"customClass's msg is : "</span> + msg)</div></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      &lt;center&gt;&lt;br&gt;cocos2dx 3.13.1 jsbinding 测试记录&lt;br&gt;&lt;/center&gt;
+    
+    </summary>
+    
+      <category term="cocos2dx" scheme="www.qqshark.com/categories/cocos2dx/"/>
+    
+    
+      <category term="cocos2dx" scheme="www.qqshark.com/tags/cocos2dx/"/>
+    
+      <category term="jsb" scheme="www.qqshark.com/tags/jsb/"/>
+    
+  </entry>
+  
+  <entry>
     <title>从论坛下载的老版本cocos2dx项目怎么运行</title>
     <link href="www.qqshark.com/2016/10/19/%E4%BB%8E%E8%AE%BA%E5%9D%9B%E4%B8%8B%E8%BD%BD%E7%9A%84%E8%80%81%E7%89%88%E6%9C%ACcocos2dx%E9%A1%B9%E7%9B%AE%E6%80%8E%E4%B9%88%E8%BF%90%E8%A1%8C/"/>
     <id>www.qqshark.com/2016/10/19/从论坛下载的老版本cocos2dx项目怎么运行/</id>
