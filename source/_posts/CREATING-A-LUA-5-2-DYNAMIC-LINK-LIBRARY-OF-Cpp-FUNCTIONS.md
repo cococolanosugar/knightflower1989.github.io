@@ -1,5 +1,5 @@
 ---
-title: 用lua 5.2为c++动态链接库
+title: 用lua 5.2为c++创建动态链接库
 date: 2014-09-07 22:12:49
 tags:
   - lua
