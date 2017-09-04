@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="www.qqshark.com/"/>
-  <updated>2017-09-04T02:37:59.000Z</updated>
+  <updated>2017-09-04T03:03:35.000Z</updated>
   <id>www.qqshark.com/</id>
   
   <author>
@@ -20,14 +20,24 @@
     <link href="www.qqshark.com/2017/01/17/%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0/"/>
     <id>www.qqshark.com/2017/01/17/微信小程序开发环境配置笔记/</id>
     <published>2017-01-17T02:22:24.000Z</published>
-    <updated>2017-09-04T02:37:59.000Z</updated>
+    <updated>2017-09-04T03:03:35.000Z</updated>
     
     <content type="html"><![CDATA[<p><center>微信小程序开发环境配置, Nginx需要开启https, 申请ssl证书</center><br><a id="more"></a></p>
-<h4 id="1-调试时可以直接用内网"><a href="#1-调试时可以直接用内网" class="headerlink" title="1.调试时可以直接用内网"></a>1.调试时可以直接用内网</h4><p><a href="http://ip:port/api/a/b?args={}&amp;sig=xxxx" target="_blank" rel="external">http://ip:port/api/a/b?args={}&amp;sig=xxxx</a><br>进行联网</p>
-<h4 id="2-开发时小程序后台配置"><a href="#2-开发时小程序后台配置" class="headerlink" title="2.开发时小程序后台配置"></a>2.开发时小程序后台配置</h4><p>项目-开发环境不校验请求域以及TLS版本 去掉勾选不验证域名</p>
-<h4 id="3-上传时，需要在微信小程序后台，设置，开发设置添加校验域名，"><a href="#3-上传时，需要在微信小程序后台，设置，开发设置添加校验域名，" class="headerlink" title="3.上传时，需要在微信小程序后台，设置，开发设置添加校验域名，"></a>3.上传时，需要在微信小程序后台，设置，开发设置添加校验域名，</h4><p>注意:不要带www，例如 <a href="https://wjdc.xxx.com" target="_blank" rel="external">https://wjdc.xxx.com</a></p>
-<h4 id="4-服务器需要搭建https环境"><a href="#4-服务器需要搭建https环境" class="headerlink" title="4.服务器需要搭建https环境"></a>4.服务器需要搭建https环境</h4><h5 id="a-nginx开启https"><a href="#a-nginx开启https" class="headerlink" title="a.nginx开启https"></a>a.nginx开启https</h5><p>命令行 nginx -V 查看nginx是否开启了–with-http_ssl_module选项，如果没有，需要重新编译带上此选项</p>
-<h5 id="b-申请ssl证书"><a href="#b-申请ssl证书" class="headerlink" title="b.申请ssl证书"></a>b.申请ssl证书</h5><p>去阿里云申请ssl证书，有免费试用一年的。<br>服务器是阿里云的，推荐DNS类证书，注意对应域名不要带www，例如wjdc.xxx.com，否则会提示服务器被冒充，勾选自动创建主机记录和记录值，审核完毕后下载证书，解压到nginx.conf同级的cert目录下<br>然后修改nginx.conf<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443;</div><div class="line">    server_name wjdc.knightflower.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /data/wjdc/logs/https_access.log  main;</div><div class="line"></div><div class="line">    ssl on;</div><div class="line">    ssl_certificate   cert/xxx.pem;</div><div class="line">    ssl_certificate_key  cert/xxx.key;</div><div class="line">    ssl_session_timeout 5m;</div><div class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">    ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        try_files /_not_exists_ @backend;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location @backend &#123;</div><div class="line">        proxy_set_header X-Forwarded-For $remote_addr;</div><div class="line">        proxy_set_header Host            $http_host;</div><div class="line"></div><div class="line">        proxy_pass http://127.0.0.1:6066;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<ol>
+<li><p>调试时可以直接用内网<br><a href="http://ip:port/api/a/b?args={}&amp;sig=xxxx" target="_blank" rel="external">http://ip:port/api/a/b?args={}&amp;sig=xxxx</a><br>进行联网</p>
+</li>
+<li><p>开发时小程序后台配置<br>项目-开发环境不校验请求域以及TLS版本 去掉勾选不验证域名</p>
+</li>
+<li><p>上传时，需要在微信小程序后台，设置，开发设置添加校验域名，<br>注意:不要带www，例如 <a href="https://wjdc.xxx.com" target="_blank" rel="external">https://wjdc.xxx.com</a></p>
+</li>
+<li><p>服务器需要搭建https环境</p>
+<ol>
+<li>nginx开启https<br>命令行 nginx -V 查看nginx是否开启了–with-http_ssl_module选项，如果没有，需要重新编译带上此选项</li>
+<li>申请ssl证书<br>去阿里云申请ssl证书，有免费试用一年的。<br>服务器是阿里云的，推荐DNS类证书，注意对应域名不要带www，例如wjdc.xxx.com，否则会提示服务器被冒充，勾选自动创建主机记录和记录值，审核完毕后下载证书，解压到nginx.conf同级的cert目录下<br>然后修改nginx.conf<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">server &#123;</div><div class="line">    listen 443;</div><div class="line">    server_name wjdc.knightflower.com;</div><div class="line"></div><div class="line">    charset utf-8;</div><div class="line">    access_log  /data/wjdc/logs/https_access.log  main;</div><div class="line"></div><div class="line">    ssl on;</div><div class="line">    ssl_certificate   cert/xxx.pem;</div><div class="line">    ssl_certificate_key  cert/xxx.key;</div><div class="line">    ssl_session_timeout 5m;</div><div class="line">    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4;</div><div class="line">    ssl_protocols TLSv1 TLSv1.1 TLSv1.2;</div><div class="line">    ssl_prefer_server_ciphers on;</div><div class="line"></div><div class="line">    location / &#123;</div><div class="line">        try_files /_not_exists_ @backend;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    location @backend &#123;</div><div class="line">        proxy_set_header X-Forwarded-For $remote_addr;</div><div class="line">        proxy_set_header Host            $http_host;</div><div class="line"></div><div class="line">        proxy_pass http://127.0.0.1:6066;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ol>
 <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">nginx -t -c /etc/nginx/nginx.conf <span class="comment">#校验配置文件是否有错</span></div><div class="line">nginx -s reload <span class="comment">#重新加载配置文件</span></div></pre></td></tr></table></figure>
 <p>然后就可以在小程序里面用wx.request接口请求服务器，url:”<a href="https://wjdc.xxx.com/a/q/query" target="_blank" rel="external">https://wjdc.xxx.com/a/q/query</a>“</p>
 ]]></content>
@@ -44,6 +54,54 @@
       <category term="nginx" scheme="www.qqshark.com/tags/nginx/"/>
     
       <category term="https" scheme="www.qqshark.com/tags/https/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>从论坛下载的老版本cocos2dx项目怎么运行</title>
+    <link href="www.qqshark.com/2016/10/19/%E4%BB%8E%E8%AE%BA%E5%9D%9B%E4%B8%8B%E8%BD%BD%E7%9A%84%E8%80%81%E7%89%88%E6%9C%ACcocos2dx%E9%A1%B9%E7%9B%AE%E6%80%8E%E4%B9%88%E8%BF%90%E8%A1%8C/"/>
+    <id>www.qqshark.com/2016/10/19/从论坛下载的老版本cocos2dx项目怎么运行/</id>
+    <published>2016-10-19T02:46:59.000Z</published>
+    <updated>2017-09-04T03:04:54.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>从论坛下载的cocos2dx项目，需要研究其逻辑，或者做二次开发，经常发现不能直接运行，以下是一些经验性的解决方法。</p>
+<a id="more"></a>
+<p>从网上下载的cocos2dx项目运行或升级步骤：</p>
+<ol>
+<li>下载xxx.zip文件，解压</li>
+<li>若是3.x的可以直接运行，2.x的如果不带库文件不能直接运行，需要放到cocos2dx-2.x.x的projects目录下面运行测试</li>
+<li>如果放到projects文件夹下面可以正常运行，则进入如下步骤：<ol>
+<li>创建SVN目录树</li>
+<li>将项目放入trunk目录</li>
+<li>将cocos2dx引擎的四个文件夹 coco2dx CocosDenshion extensions external 拷贝到trunk目录</li>
+<li>打开 ios项目文件 修改项目目录树里面的cocos2dx.xcodeproj Box2d chipmunk CocosDenshion extensions libwebsocket 指向的上述拷贝过来的对应文件夹</li>
+<li>修改项目 build setting-&gt; search paths  改为当前相对目录，如上即使依次删除 header search paths和library search paths 各个路径的“../../”</li>
+<li>修改build phases-&gt;link binary with libraries 增加libcocos2dx.a</li>
+<li>打开mac版项目文件 做上述同样步骤的修改</li>
+<li>Android项目修改对应的 Android.mk文件索引对应的代码文件，build_native.sh修改COCOS2DX_ROOT</li>
+</ol>
+</li>
+</ol>
+<p>osx系统升级，会遇到cocos2dx 2.x项目 如果遇到<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">m_pValueDict-&gt;setObject( CCString::create( (<span class="keyword">const</span> <span class="keyword">char</span>*)glGetString(GL_VENDOR)), <span class="string">"gl.vendor"</span>);</div></pre></td></tr></table></figure></p>
+<p>报错</p>
+<p>修改 mac项目的 AppController.mm文件的 applicationDidFinishLaunching函数<br>在<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">glView = [[EAGLView alloc] initWithFrame:rect pixelFormat:pixelFormat];</div></pre></td></tr></table></figure></p>
+<p>下面加入<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[glView prepareOpenGL];</div></pre></td></tr></table></figure></p>
+<p>方案一：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">NSOpenGLContext</span> *ctx = [[<span class="built_in">NSOpenGLContext</span> alloc] initWithFormat:pixelFormat shareContext:<span class="literal">nil</span>];</div><div class="line"><span class="keyword">if</span>(ctx)</div><div class="line">&#123;</div><div class="line">    [glView setOpenGLContext:ctx];</div><div class="line">    [ctx setView:glView];</div><div class="line">    [ctx makeCurrentContext];</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>方案二：<br><figure class="highlight objc"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">[glView prepareOpenGL];</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;从论坛下载的cocos2dx项目，需要研究其逻辑，或者做二次开发，经常发现不能直接运行，以下是一些经验性的解决方法。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="cocos2dx" scheme="www.qqshark.com/categories/cocos2dx/"/>
+    
+    
+      <category term="cocos2dx" scheme="www.qqshark.com/tags/cocos2dx/"/>
+    
+      <category term="oc" scheme="www.qqshark.com/tags/oc/"/>
     
   </entry>
   

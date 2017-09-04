@@ -3,13 +3,25 @@
   <entry>
     <title><![CDATA[微信小程序开发环境配置笔记]]></title>
     <url>%2F2017%2F01%2F17%2F%E5%BE%AE%E4%BF%A1%E5%B0%8F%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E7%8E%AF%E5%A2%83%E9%85%8D%E7%BD%AE%E7%AC%94%E8%AE%B0%2F</url>
-    <content type="text"><![CDATA[微信小程序开发环境配置, Nginx需要开启https, 申请ssl证书 1.调试时可以直接用内网http://ip:port/api/a/b?args={}&amp;sig=xxxx进行联网 2.开发时小程序后台配置项目-开发环境不校验请求域以及TLS版本 去掉勾选不验证域名 3.上传时，需要在微信小程序后台，设置，开发设置添加校验域名，注意:不要带www，例如 https://wjdc.xxx.com 4.服务器需要搭建https环境a.nginx开启https命令行 nginx -V 查看nginx是否开启了–with-http_ssl_module选项，如果没有，需要重新编译带上此选项 b.申请ssl证书去阿里云申请ssl证书，有免费试用一年的。服务器是阿里云的，推荐DNS类证书，注意对应域名不要带www，例如wjdc.xxx.com，否则会提示服务器被冒充，勾选自动创建主机记录和记录值，审核完毕后下载证书，解压到nginx.conf同级的cert目录下然后修改nginx.conf1234567891011121314151617181920212223242526server &#123; listen 443; server_name wjdc.knightflower.com; charset utf-8; access_log /data/wjdc/logs/https_access.log main; ssl on; ssl_certificate cert/xxx.pem; ssl_certificate_key cert/xxx.key; ssl_session_timeout 5m; ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4; ssl_protocols TLSv1 TLSv1.1 TLSv1.2; ssl_prefer_server_ciphers on; location / &#123; try_files /_not_exists_ @backend; &#125; location @backend &#123; proxy_set_header X-Forwarded-For $remote_addr; proxy_set_header Host $http_host; proxy_pass http://127.0.0.1:6066; &#125;&#125; 12nginx -t -c /etc/nginx/nginx.conf #校验配置文件是否有错nginx -s reload #重新加载配置文件 然后就可以在小程序里面用wx.request接口请求服务器，url:”https://wjdc.xxx.com/a/q/query“]]></content>
+    <content type="text"><![CDATA[微信小程序开发环境配置, Nginx需要开启https, 申请ssl证书 调试时可以直接用内网http://ip:port/api/a/b?args={}&amp;sig=xxxx进行联网 开发时小程序后台配置项目-开发环境不校验请求域以及TLS版本 去掉勾选不验证域名 上传时，需要在微信小程序后台，设置，开发设置添加校验域名，注意:不要带www，例如 https://wjdc.xxx.com 服务器需要搭建https环境 nginx开启https命令行 nginx -V 查看nginx是否开启了–with-http_ssl_module选项，如果没有，需要重新编译带上此选项 申请ssl证书去阿里云申请ssl证书，有免费试用一年的。服务器是阿里云的，推荐DNS类证书，注意对应域名不要带www，例如wjdc.xxx.com，否则会提示服务器被冒充，勾选自动创建主机记录和记录值，审核完毕后下载证书，解压到nginx.conf同级的cert目录下然后修改nginx.conf1234567891011121314151617181920212223242526server &#123; listen 443; server_name wjdc.knightflower.com; charset utf-8; access_log /data/wjdc/logs/https_access.log main; ssl on; ssl_certificate cert/xxx.pem; ssl_certificate_key cert/xxx.key; ssl_session_timeout 5m; ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4; ssl_protocols TLSv1 TLSv1.1 TLSv1.2; ssl_prefer_server_ciphers on; location / &#123; try_files /_not_exists_ @backend; &#125; location @backend &#123; proxy_set_header X-Forwarded-For $remote_addr; proxy_set_header Host $http_host; proxy_pass http://127.0.0.1:6066; &#125;&#125; 12nginx -t -c /etc/nginx/nginx.conf #校验配置文件是否有错nginx -s reload #重新加载配置文件 然后就可以在小程序里面用wx.request接口请求服务器，url:”https://wjdc.xxx.com/a/q/query“]]></content>
       <categories>
         <category>小程序</category>
       </categories>
       <tags>
         <tag>nginx</tag>
         <tag>https</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[从论坛下载的老版本cocos2dx项目怎么运行]]></title>
+    <url>%2F2016%2F10%2F19%2F%E4%BB%8E%E8%AE%BA%E5%9D%9B%E4%B8%8B%E8%BD%BD%E7%9A%84%E8%80%81%E7%89%88%E6%9C%ACcocos2dx%E9%A1%B9%E7%9B%AE%E6%80%8E%E4%B9%88%E8%BF%90%E8%A1%8C%2F</url>
+    <content type="text"><![CDATA[从论坛下载的cocos2dx项目，需要研究其逻辑，或者做二次开发，经常发现不能直接运行，以下是一些经验性的解决方法。 从网上下载的cocos2dx项目运行或升级步骤： 下载xxx.zip文件，解压 若是3.x的可以直接运行，2.x的如果不带库文件不能直接运行，需要放到cocos2dx-2.x.x的projects目录下面运行测试 如果放到projects文件夹下面可以正常运行，则进入如下步骤： 创建SVN目录树 将项目放入trunk目录 将cocos2dx引擎的四个文件夹 coco2dx CocosDenshion extensions external 拷贝到trunk目录 打开 ios项目文件 修改项目目录树里面的cocos2dx.xcodeproj Box2d chipmunk CocosDenshion extensions libwebsocket 指向的上述拷贝过来的对应文件夹 修改项目 build setting-&gt; search paths 改为当前相对目录，如上即使依次删除 header search paths和library search paths 各个路径的“../../” 修改build phases-&gt;link binary with libraries 增加libcocos2dx.a 打开mac版项目文件 做上述同样步骤的修改 Android项目修改对应的 Android.mk文件索引对应的代码文件，build_native.sh修改COCOS2DX_ROOT osx系统升级，会遇到cocos2dx 2.x项目 如果遇到1m_pValueDict-&gt;setObject( CCString::create( (const char*)glGetString(GL_VENDOR)), "gl.vendor"); 报错 修改 mac项目的 AppController.mm文件的 applicationDidFinishLaunching函数在1glView = [[EAGLView alloc] initWithFrame:rect pixelFormat:pixelFormat]; 下面加入1[glView prepareOpenGL]; 方案一：1234567NSOpenGLContext *ctx = [[NSOpenGLContext alloc] initWithFormat:pixelFormat shareContext:nil];if(ctx)&#123; [glView setOpenGLContext:ctx]; [ctx setView:glView]; [ctx makeCurrentContext];&#125; 方案二：1[glView prepareOpenGL];]]></content>
+      <categories>
+        <category>cocos2dx</category>
+      </categories>
+      <tags>
+        <tag>cocos2dx</tag>
+        <tag>oc</tag>
       </tags>
   </entry>
   <entry>

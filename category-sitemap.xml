@@ -15,7 +15,14 @@
 
     <url>
         <loc>www.qqshark.com/categories/%E5%B0%8F%E7%A8%8B%E5%BA%8F/</loc>
-        <lastmod>2017-09-04T02:37:59.000Z</lastmod>
+        <lastmod>2017-09-04T03:03:35.000Z</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.2</priority>
+    </url>
+
+    <url>
+        <loc>www.qqshark.com/categories/cocos2dx/</loc>
+        <lastmod>2017-09-04T03:04:54.000Z</lastmod>
         <changefreq>weekly</changefreq>
         <priority>0.2</priority>
     </url>
