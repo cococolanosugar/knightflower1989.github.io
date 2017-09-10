@@ -83,7 +83,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="go,c," />
 
 
 
@@ -101,17 +101,18 @@
 
 
 
-<meta name="description" content="Don’t be panic!!!">
-<meta property="og:type" content="website">
-<meta property="og:title" content="关于">
-<meta property="og:url" content="www.qqshark.com/about/index.html">
+<meta name="description" content="golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。">
+<meta name="keywords" content="go,c">
+<meta property="og:type" content="article">
+<meta property="og:title" content="golang调用c动态库">
+<meta property="og:url" content="www.qqshark.com/2017/09/10/golang调用动态库/index.html">
 <meta property="og:site_name" content="骑士之花">
-<meta property="og:description" content="Don’t be panic!!!">
+<meta property="og:description" content="golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-09-01T10:51:17.000Z">
+<meta property="og:updated_time" content="2017-09-10T09:57:23.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="关于">
-<meta name="twitter:description" content="Don’t be panic!!!">
+<meta name="twitter:title" content="golang调用c动态库">
+<meta name="twitter:description" content="golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。">
 
 
 
@@ -139,19 +140,13 @@
 
 
 
-  <link rel="canonical" href="www.qqshark.com/about/"/>
+  <link rel="canonical" href="www.qqshark.com/2017/09/10/golang调用动态库/"/>
 
 
 
 
 
-  <title>
-  
-
-  
-    关于 | 骑士之花
-  
-</title>
+  <title> golang调用c动态库 | 骑士之花 </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -186,7 +181,7 @@
     
   
 
-  <div class="container sidebar-position-right  ">
+  <div class="container sidebar-position-right page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -339,21 +334,243 @@
             
 
   <div id="posts" class="posts-expand">
-  <header class="post-header">
+    
 
-	<h2 class="post-title" itemprop="name headline">关于</h2>
+  
 
+  
+  
+  
 
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="www.qqshark.com/2017/09/10/golang调用动态库/">
 
-</header>
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Shicai Xu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="骑士之花">
+    </span>
 
     
-    
-      <hr>
-<p><center> Don’t be panic!!!</center></p>
-<hr>
+      <header class="post-header">
 
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+            
+            
+              
+                golang调用c动态库
+              
+            
+          </h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T17:07:16+08:00">
+                2017-09-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/go/" itemprop="url" rel="index">
+                    <span itemprop="name">go</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/10/golang调用动态库/" class="leancloud_visitors" data-flag-title="golang调用c动态库">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+            <div class="post-wordcount">
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-file-word-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">字数统计</span>
+                
+                <span title="字数统计">
+                  374
+                </span>
+              
+
+              
+                <span class="post-meta-divider">|</span>
+              
+
+              
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-clock-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">阅读时长</span>
+                
+                <span title="阅读时长">
+                  2
+                </span>
+              
+            </div>
+          
+
+          
+
+        </div>
+      </header>
     
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。</p>
+<a id="more"></a>
+<ol>
+<li><p>创建项目</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">../cgolearn</div><div class="line">├── lib</div><div class="line">│   ├── test_so.c</div><div class="line">│   └── test_so.h</div><div class="line">└── src</div><div class="line">    ├── load_so.c</div><div class="line">    ├── load_so.h</div><div class="line">    └── main.go</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建动态连接库</p>
+<p> lib目录下文件内容如下:</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//test_so.h</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> test_so_func(<span class="keyword">int</span> a,<span class="keyword">int</span> b);</div></pre></td></tr></table></figure>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//test_so.c</span></div><div class="line"></div><div class="line">#include <span class="string">"test_so.h"</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> test_so_func(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> a*b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 生成so文件</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> lib</div><div class="line">gcc -shared ./test_so.c -o test_so.so</div></pre></td></tr></table></figure>
+</li>
+<li><p>在golang代码中调用c动态库函数<br> src目录下文件内容如下:</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//load_so.h</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">do_test_so_func</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>;</div></pre></td></tr></table></figure>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//load_so.c</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"load_so.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">do_test_so_func</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">void</span>* handle;</div><div class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">int</span> <span class="params">(*FPTR)</span><span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>)</span></span>;</div><div class="line"></div><div class="line">    handle = dlopen(<span class="string">"./test_so.so"</span>, <span class="number">1</span>);</div><div class="line">    FPTR fptr = (FPTR)dlsym(handle, <span class="string">"test_so_func"</span>);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> result = (*fptr)(a,b);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.go</span></div><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">#include "load_so.h"</span></div><div class="line"><span class="comment">#cgo LDFLAGS: -ldl</span></div><div class="line"><span class="comment">*/</span></div><div class="line"><span class="keyword">import</span> <span class="string">"C"</span></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"20*30="</span>, C.do_test_so_func(<span class="number">20</span>, <span class="number">30</span>))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 编译运行:</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> src</div><div class="line">go build -o main</div><div class="line">./main</div></pre></td></tr></table></figure>
+</li>
+<li><p>注意事项<br> 1，import “C”，一定要紧跟着cgo标志的注释代码，中间不能有空行。<br> 2，import “C”必须单独一行，不能和其它库一起导入。</p>
+</li>
+<li><p>待做事项<br> do_test_so_func可以优化成一个工厂函数，从Go代码中传入不同的标志，调用不同的函数，返回不同类型的返回值。</p>
+</li>
+</ol>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/go/" rel="tag"># go</a>
+          
+            <a href="/tags/c/" rel="tag"># c</a>
+          
+        </div>
+      
+
+      
+        
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/05/服务端程序员常见面试问题整理/" rel="next" title="服务端程序员常见面试问题整理">
+                <i class="fa fa-chevron-left"></i> 服务端程序员常见面试问题整理
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -603,6 +820,10 @@
   
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
 
   
 

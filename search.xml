@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[golang调用c动态库]]></title>
+    <url>%2F2017%2F09%2F10%2Fgolang%E8%B0%83%E7%94%A8%E5%8A%A8%E6%80%81%E5%BA%93%2F</url>
+    <content type="text"><![CDATA[golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。 创建项目 12345678../cgolearn├── lib│ ├── test_so.c│ └── test_so.h└── src ├── load_so.c ├── load_so.h └── main.go 创建动态连接库 lib目录下文件内容如下: 123//test_so.hint test_so_func(int a,int b); 12345678//test_so.c#include "test_so.h"int test_so_func(int a,int b)&#123; return a*b;&#125; 生成so文件 12cd libgcc -shared ./test_so.c -o test_so.so 在golang代码中调用c动态库函数 src目录下文件内容如下: 123//load_so.hint do_test_so_func(int a,int b); 12345678910111213141516//load_so.c#include "load_so.h"#include &lt;dlfcn.h&gt;int do_test_so_func(int a,int b)&#123; void* handle; typedef int (*FPTR)(int,int); handle = dlopen("./test_so.so", 1); FPTR fptr = (FPTR)dlsym(handle, "test_so_func"); int result = (*fptr)(a,b); return result;&#125; 1234567891011121314//main.gopackage main/*#include "load_so.h"#cgo LDFLAGS: -ldl*/import "C"import "fmt"func main() &#123; fmt.Println("20*30=", C.do_test_so_func(20, 30))&#125; 编译运行: 123cd srcgo build -o main./main 注意事项 1，import “C”，一定要紧跟着cgo标志的注释代码，中间不能有空行。 2，import “C”必须单独一行，不能和其它库一起导入。 待做事项 do_test_so_func可以优化成一个工厂函数，从Go代码中传入不同的标志，调用不同的函数，返回不同类型的返回值。]]></content>
+      <categories>
+        <category>go</category>
+      </categories>
+      <tags>
+        <tag>go</tag>
+        <tag>c</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[服务端程序员常见面试问题整理]]></title>
+    <url>%2F2017%2F09%2F05%2F%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86%2F</url>
+    <content type="text"><![CDATA[程序员的日常工作，就像搭积木，编程语言，数据库，常用开发框架等，都是积木的一块，程序员就是阅读说明书，把这些积木配合起来，做成一个软件，所以程序员经常自嘲为码农。 常见的面试问题，大多都偏理论，就像你会用积木搭建一栋房子，突然有人问你，你知道积木是怎么做的吗？此时一脸懵逼。很多时候，知道有那么回事儿，但是概念并不清晰，现在自己整理下自己遇见的面试问题，希望以后避免懵逼的尴尬。 Python的GIL 在python的原始解释器CPython中存在着GIL（Global Interpreter Lock，全局解释器锁），因此在解释执行python代码时，会产生互斥锁来限制线程对共享资源的访问，直到解释器遇到I/O操作或者操作次数达到一定数目时才会释放GIL。所以，虽然CPython的线程库直接封装了系统的原生线程，但CPython整体作为一个进程，同一时间只会有一个获得GIL的线程在跑，其他线程则处于等待状态。这就造成了即使在多核CPU中，多线程也只是做着分时切换而已。这也是GIL饱受诟病的原因。 Python 不适合开发 CPU 密集型的程序， Python 多线程的意义就是能让每条语句宏观上并发执行。对于 IO 密集型的程序，Python 多线程还是有很大作用的。然而 Python 3 引入的 asyncio 模块使得很多 IO 操作有了更好的方式去解决，这就非常类似 Node.js 了，都是没有多线程，而是采用 Event Loop 来处理耗时的 IO 操作。 muiltprocessing库，也可以让多进程的python代码编写类似多线程。 进程、线程和协程的理解 进程拥有自己独立的堆和栈，既不共享堆，亦不共享栈，进程由操作系统调度。 线程拥有自己独立的栈和共享的堆，共享堆，不共享栈，线程亦由操作系统调度(标准线程是的)。 协程和线程一样共享堆，不共享栈，协程由程序员在协程的代码里显示调度。如果使用封装好的，例如gevent等协程库，程序员就不必承担调度的责任。 其他参考: 进程，线程，协程与并行，并发 进程线程协程的区别 TCP与UDP区别总结1、TCP面向连接（如打电话要先拨号建立连接）;UDP是无连接的，即发送数据之前不需要建立连接2、TCP提供可靠的服务。也就是说，通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达;UDP尽最大努力交付，即不保证可靠交付3、TCP面向字节流，实际上是TCP把数据看成一连串无结构的字节流;UDP是面向报文的UDP没有拥塞控制，因此网络出现拥塞不会使源主机的发送速率降低（对实时应用很有用，如IP电话，实时视频会议等）4、每一条TCP连接只能是点到点的;UDP支持一对一，一对多，多对一和多对多的交互通信5、TCP首部开销20字节;UDP的首部开销小，只有8个字节6、TCP的逻辑通信信道是全双工的可靠信道，UDP则是不可靠信道 123456tcp协议和udp协议的差别 TCP UDP 是否连接 面向连接 面向非连接 传输可靠性 可靠 不可靠 应用场合 传输大量数据 少量数据 速度 慢 快 待续]]></content>
+      <categories>
+        <category>面试</category>
+      </categories>
+      <tags>
+        <tag>面试</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[cocoscreator 1.5.2 热更新 大厅 + 子游戏 不用重启DEMO]]></title>
     <url>%2F2017%2F08%2F20%2Fcocoscreator-hall-with-subgames-demo%2F</url>
     <content type="text"><![CDATA[cocos论坛关于该话题讨论帖子的地址 大厅和子游戏均为正常cocos creater项目，只是热更新的时候指向的地址和本地保存的目录不一样。 Demo工程Github地址 创建大厅项目 详细逻辑见 hall项目 创建子游戏项目 详细逻辑见 subgame项目 注意：坑1，不要都创建helloworld，可以一个空项目，一个helloworld项目再修改，否则加载子游戏的时候会爆错 Class already exists with the same cid : “280c3rsZJJKnZ9RqbALVwtK”. 导致子游戏按钮点起来没反应！ 打开webstorm创建一个express项目命名hotupdate，目的为托管热更新文件，也可以用其他web服务器。在hotupdate项目的public文件夹下创建remote-assets文件夹。 在subgame项目根目录下创建build-template/jsb-binary/src文件夹，新建main.js dating.js文件在此文件夹，具体代码参见对应文件，这样每次构建编译，ccc就会自动帮你拷贝到build文件夹下面对应路径。 用cocoscreater构建，编译subgame。 然后在subgame根目录下，执行命令： node version_generator.js -v 1.0.0 -u http://192.168.2.114:3000/remote-assets/subgame/ -s build/jsb-binary -d remote-assets/ 生成子游戏的热更新文件。 拷贝build/js-binary下生成的res和src文件夹到 romote-assets文件夹。 此时，子游戏的所有热更新文件已经生成完毕。 拷贝subgam项目下romote-assets里面的所有文件到hotupdate项目下的public/romote-assets/subgame文件。 注意：坑2，生成的project.manifest放到public/romote-assets/subgame要改名字，改成跟代码里对应的名字，只要不叫project.manifest就行，例如peision.manifest或则sub_game_project.manifest（此处可以修改version_generator.js脚本逻辑给其重命名，免掉手动修改的麻烦）否则每次重启APP都会清空本地下载的子游戏，导致再次进入不了，具体原因未知。 启动hotupdate，在浏览器打开http://192.168.2.114:3000/remote-assets/subgame/version.manifest如果能看到正常的version.manifest内容说明，服务器搭建成功，热更新文件能正常访问。 此时运行hall，点击下载游戏，下载完成之后，点击进入游戏，点击返回大厅就能返回。到此，大厅加子游戏demo完成。 注意：坑3，在ccc自带的模拟器里面是不能返回大厅的，会报无法加载场景对应的json文件的错误。在xcode的模拟器里面没问题。 注意：build-template里面的main.js 和 dating.js 每个子游戏都应该有一份，需要仔细规划一下，统一代码风格，和项目相关的一些变量。 同时需要注意这俩文件初始化资源目录的地方开头加斜杠和不叫斜杠的区别，前者去找默认的大厅项目资源，后者是去相对目录找资源。]]></content>

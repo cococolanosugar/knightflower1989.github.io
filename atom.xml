@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="www.qqshark.com/"/>
-  <updated>2017-09-04T15:21:00.000Z</updated>
+  <updated>2017-09-10T09:57:23.000Z</updated>
   <id>www.qqshark.com/</id>
   
   <author>
@@ -14,6 +14,96 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>golang调用c动态库</title>
+    <link href="www.qqshark.com/2017/09/10/golang%E8%B0%83%E7%94%A8%E5%8A%A8%E6%80%81%E5%BA%93/"/>
+    <id>www.qqshark.com/2017/09/10/golang调用动态库/</id>
+    <published>2017-09-10T09:07:16.000Z</published>
+    <updated>2017-09-10T09:57:23.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。</p>
+<a id="more"></a>
+<ol>
+<li><p>创建项目</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">../cgolearn</div><div class="line">├── lib</div><div class="line">│   ├── test_so.c</div><div class="line">│   └── test_so.h</div><div class="line">└── src</div><div class="line">    ├── load_so.c</div><div class="line">    ├── load_so.h</div><div class="line">    └── main.go</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建动态连接库</p>
+<p> lib目录下文件内容如下:</p>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//test_so.h</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> test_so_func(<span class="keyword">int</span> a,<span class="keyword">int</span> b);</div></pre></td></tr></table></figure>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//test_so.c</span></div><div class="line"></div><div class="line">#include <span class="string">"test_so.h"</span></div><div class="line"></div><div class="line"><span class="keyword">int</span> test_so_func(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</div><div class="line">&#123;</div><div class="line">    <span class="keyword">return</span> a*b;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 生成so文件</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> lib</div><div class="line">gcc -shared ./test_so.c -o test_so.so</div></pre></td></tr></table></figure>
+</li>
+<li><p>在golang代码中调用c动态库函数<br> src目录下文件内容如下:</p>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//load_so.h</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">do_test_so_func</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span>;</div></pre></td></tr></table></figure>
+ <figure class="highlight c"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//load_so.c</span></div><div class="line"></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">"load_so.h"</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span> <span class="meta-string">&lt;dlfcn.h&gt;</span></span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">do_test_so_func</span><span class="params">(<span class="keyword">int</span> a,<span class="keyword">int</span> b)</span></span></div><div class="line"><span class="function"></span>&#123;</div><div class="line">    <span class="keyword">void</span>* handle;</div><div class="line">    <span class="function"><span class="keyword">typedef</span> <span class="title">int</span> <span class="params">(*FPTR)</span><span class="params">(<span class="keyword">int</span>,<span class="keyword">int</span>)</span></span>;</div><div class="line"></div><div class="line">    handle = dlopen(<span class="string">"./test_so.so"</span>, <span class="number">1</span>);</div><div class="line">    FPTR fptr = (FPTR)dlsym(handle, <span class="string">"test_so_func"</span>);</div><div class="line"></div><div class="line">    <span class="keyword">int</span> result = (*fptr)(a,b);</div><div class="line">    <span class="keyword">return</span> result;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+ <figure class="highlight go"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">//main.go</span></div><div class="line"></div><div class="line"><span class="keyword">package</span> main</div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"><span class="comment">#include "load_so.h"</span></div><div class="line"><span class="comment">#cgo LDFLAGS: -ldl</span></div><div class="line"><span class="comment">*/</span></div><div class="line"><span class="keyword">import</span> <span class="string">"C"</span></div><div class="line"><span class="keyword">import</span> <span class="string">"fmt"</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">func</span> <span class="title">main</span><span class="params">()</span></span> &#123;</div><div class="line">    fmt.Println(<span class="string">"20*30="</span>, C.do_test_so_func(<span class="number">20</span>, <span class="number">30</span>))</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p> 编译运行:</p>
+ <figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">cd</span> src</div><div class="line">go build -o main</div><div class="line">./main</div></pre></td></tr></table></figure>
+</li>
+<li><p>注意事项<br> 1，import “C”，一定要紧跟着cgo标志的注释代码，中间不能有空行。<br> 2，import “C”必须单独一行，不能和其它库一起导入。</p>
+</li>
+<li><p>待做事项<br> do_test_so_func可以优化成一个工厂函数，从Go代码中传入不同的标志，调用不同的函数，返回不同类型的返回值。</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;golang以其高并发，部署简单，编译迅速，而且像动态语言一样的开发效率等特点，吸引了很多程序的关注，但是有时候为了运行速度需要跟c一起使用，现整理一个golang调用c动态链接库的demo程序，以供自己将来参考，以下文字，大多来源于网络，整理如下。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="go" scheme="www.qqshark.com/categories/go/"/>
+    
+    
+      <category term="go" scheme="www.qqshark.com/tags/go/"/>
+    
+      <category term="c" scheme="www.qqshark.com/tags/c/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>服务端程序员常见面试问题整理</title>
+    <link href="www.qqshark.com/2017/09/05/%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%A8%8B%E5%BA%8F%E5%91%98%E5%B8%B8%E8%A7%81%E9%9D%A2%E8%AF%95%E9%97%AE%E9%A2%98%E6%95%B4%E7%90%86/"/>
+    <id>www.qqshark.com/2017/09/05/服务端程序员常见面试问题整理/</id>
+    <published>2017-09-05T09:53:04.000Z</published>
+    <updated>2017-09-10T10:07:39.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>程序员的日常工作，就像搭积木，编程语言，数据库，常用开发框架等，都是积木的一块，程序员就是阅读说明书，把这些积木配合起来，做成一个软件，所以程序员经常自嘲为码农。 常见的面试问题，大多都偏理论，就像你会用积木搭建一栋房子，突然有人问你，你知道积木是怎么做的吗？此时一脸懵逼。很多时候，知道有那么回事儿，但是概念并不清晰，现在自己整理下自己遇见的面试问题，希望以后避免懵逼的尴尬。</p>
+<a id="more"></a>
+<ol>
+<li><p>Python的GIL</p>
+<p>在python的原始解释器CPython中存在着GIL（Global Interpreter Lock，全局解释器锁），因此在解释执行python代码时，会产生互斥锁来限制线程对共享资源的访问，直到解释器遇到I/O操作或者操作次数达到一定数目时才会释放GIL。所以，虽然CPython的线程库直接封装了系统的原生线程，但CPython整体作为一个进程，同一时间只会有一个获得GIL的线程在跑，其他线程则处于等待状态。这就造成了即使在多核CPU中，多线程也只是做着分时切换而已。这也是GIL饱受诟病的原因。</p>
+<p>Python 不适合开发 CPU 密集型的程序， Python 多线程的意义就是能让每条语句宏观上并发执行。对于 IO 密集型的程序，Python 多线程还是有很大作用的。然而 Python 3 引入的 asyncio 模块使得很多 IO 操作有了更好的方式去解决，这就非常类似 Node.js 了，都是没有多线程，而是采用 Event Loop 来处理耗时的 IO 操作。</p>
+<p>muiltprocessing库，也可以让多进程的python代码编写类似多线程。</p>
+</li>
+<li><p>进程、线程和协程的理解<br> 进程拥有自己独立的堆和栈，既不共享堆，亦不共享栈，进程由操作系统调度。</p>
+<p> 线程拥有自己独立的栈和共享的堆，共享堆，不共享栈，线程亦由操作系统调度(标准线程是的)。</p>
+<p> 协程和线程一样共享堆，不共享栈，协程由程序员在协程的代码里显示调度。如果使用封装好的，例如gevent等协程库，程序员就不必承担调度的责任。</p>
+<p> 其他参考:<br>   <a href="http://www.jianshu.com/p/f11724034d50" target="_blank" rel="external">进程，线程，协程与并行，并发</a><br>   <a href="http://www.cnblogs.com/guokaixin/p/6041237.html" target="_blank" rel="external">进程线程协程的区别</a></p>
+</li>
+<li><p>TCP与UDP区别总结<br>1、TCP面向连接（如打电话要先拨号建立连接）;UDP是无连接的，即发送数据之前不需要建立连接<br>2、TCP提供可靠的服务。也就是说，通过TCP连接传送的数据，无差错，不丢失，不重复，且按序到达;UDP尽最大努力交付，即不保证可靠交付<br>3、TCP面向字节流，实际上是TCP把数据看成一连串无结构的字节流;UDP是面向报文的<br>UDP没有拥塞控制，因此网络出现拥塞不会使源主机的发送速率降低（对实时应用很有用，如IP电话，实时视频会议等）<br>4、每一条TCP连接只能是点到点的;UDP支持一对一，一对多，多对一和多对多的交互通信<br>5、TCP首部开销20字节;UDP的首部开销小，只有8个字节<br>6、TCP的逻辑通信信道是全双工的可靠信道，UDP则是不可靠信道</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">tcp协议和udp协议的差别 </div><div class="line">          TCP            UDP </div><div class="line">是否连接   面向连接        面向非连接 </div><div class="line">传输可靠性 可靠            不可靠 </div><div class="line">应用场合   传输大量数据     少量数据 </div><div class="line">速度      慢              快</div></pre></td></tr></table></figure>
+</li>
+<li><p>待续</p>
+</li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;程序员的日常工作，就像搭积木，编程语言，数据库，常用开发框架等，都是积木的一块，程序员就是阅读说明书，把这些积木配合起来，做成一个软件，所以程序员经常自嘲为码农。 常见的面试问题，大多都偏理论，就像你会用积木搭建一栋房子，突然有人问你，你知道积木是怎么做的吗？此时一脸懵逼。很多时候，知道有那么回事儿，但是概念并不清晰，现在自己整理下自己遇见的面试问题，希望以后避免懵逼的尴尬。&lt;/p&gt;
+    
+    </summary>
+    
+      <category term="面试" scheme="www.qqshark.com/categories/%E9%9D%A2%E8%AF%95/"/>
+    
+    
+      <category term="面试" scheme="www.qqshark.com/tags/%E9%9D%A2%E8%AF%95/"/>
+    
+  </entry>
   
   <entry>
     <title>cocoscreator 1.5.2 热更新 大厅 + 子游戏 不用重启DEMO</title>
