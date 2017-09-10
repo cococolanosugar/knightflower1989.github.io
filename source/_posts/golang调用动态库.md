@@ -71,7 +71,7 @@ golang以其高并发，部署简单，编译迅速，而且像动态语言一�
         void* handle;
         typedef int (*FPTR)(int,int);
 
-        handle = dlopen("./test_so.so", 1);
+        handle = dlopen("../lib/test_so.so", 1);
         FPTR fptr = (FPTR)dlsym(handle, "test_so_func");
 
         int result = (*fptr)(a,b);
@@ -110,4 +110,4 @@ golang以其高并发，部署简单，编译迅速，而且像动态语言一�
     2，import "C"必须单独一行，不能和其它库一起导入。
 
 5. 待做事项
-    do_test_so_func可以优化成一个工厂函数，从Go代码中传入不同的标志，调用不同的函数，返回不同类型的返回值。
+    do_test_so_func可以优化成一个工厂函数，从Go代码中传入不同的标志，调用不同的函数，返回不同类型的返回值。或者创建一个函数映射表来调用。
